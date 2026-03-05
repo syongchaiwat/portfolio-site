@@ -1,32 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { skillGroups, proficiencySkills } from "@/lib/data/skills";
+import { motion } from "framer-motion";
+import { skillGroups } from "@/lib/data/skills";
 import { fadeUp, stagger } from "@/lib/animations";
-
-function ProficiencyBar({ name, level, index }: { name: string; level: number; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-
-  return (
-    <div ref={ref} className="space-y-1.5">
-      <div className="flex justify-between items-center">
-        <span className="text-sm font-medium text-[var(--foreground)]">{name}</span>
-        <span className="text-sm text-[var(--accent-light)] font-semibold">{level}%</span>
-      </div>
-      <div className="h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
-        <motion.div
-          className="h-full rounded-full"
-          style={{ background: "linear-gradient(90deg, #7c3aed, #a855f7)" }}
-          initial={{ width: 0 }}
-          animate={inView ? { width: `${level}%` } : { width: 0 }}
-          transition={{ duration: 1, delay: index * 0.08, ease: "easeOut" }}
-        />
-      </div>
-    </div>
-  );
-}
 
 export default function Skills() {
   return (
@@ -54,7 +30,7 @@ export default function Skills() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-16"
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
         >
           {skillGroups.map((group) => (
             <motion.div
@@ -82,24 +58,6 @@ export default function Skills() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Proficiency bars */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="glass-card p-8"
-        >
-          <h3 className="font-heading font-semibold text-lg text-[var(--foreground)] mb-8">
-            Proficiency Overview
-          </h3>
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-5">
-            {proficiencySkills.map((skill, i) => (
-              <ProficiencyBar key={skill.name} name={skill.name} level={skill.level} index={i} />
-            ))}
-          </div>
         </motion.div>
       </div>
     </section>
