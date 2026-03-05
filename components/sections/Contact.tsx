@@ -30,15 +30,26 @@ export default function Contact() {
     reset,
   } = useForm<FormData>();
 
+  const [error, setError] = useState<string | null>(null);
+
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
-    // Simulate network request
-    await new Promise((res) => setTimeout(res, 1200));
-    console.log("Form submitted:", data);
-    setSubmitting(false);
-    setSubmitted(true);
-    reset();
-    setTimeout(() => setSubmitted(false), 5000);
+    setError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Failed to send");
+      setSubmitted(true);
+      reset();
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch {
+      setError("Something went wrong. Please try again or email me directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -205,6 +216,11 @@ export default function Contact() {
                       <span className="text-xs text-red-400">{errors.message.message}</span>
                     )}
                   </div>
+
+                  {/* Error message */}
+                  {error && (
+                    <p className="text-sm text-red-400 text-center">{error}</p>
+                  )}
 
                   {/* Submit */}
                   <button
