@@ -1,5 +1,11 @@
 export type ProjectCategory = "AI / LLM" | "Pricing Optimization" | "Experimentation";
 
+export interface ProjectArticle {
+  motivation: string;
+  approaches: string[];
+  keyTakeaways: string[];
+}
+
 export interface Project {
   id: string;
   category: ProjectCategory;
@@ -11,6 +17,7 @@ export interface Project {
   githubUrl: string;
   demoUrl: string;
   imageAlt: string;
+  article?: ProjectArticle;
 }
 
 export const projects: Project[] = [
@@ -51,6 +58,7 @@ export const projects: Project[] = [
     demoUrl: "#",
     imageAlt: "LLM fine-tuning pipeline with LoRA adapters",
   },
+
   // ── Pricing Optimization ──────────────────────────────────────────────────
   {
     id: "dynamic-pricing-engine",
@@ -69,6 +77,22 @@ export const projects: Project[] = [
     githubUrl: "https://github.com",
     demoUrl: "#",
     imageAlt: "Dynamic pricing engine architecture",
+    article: {
+      motivation:
+        "Static pricing rules set by merchandisers became a bottleneck as our catalogue grew to tens of thousands of SKUs. Prices were reviewed at most once a day, meaning we were slow to react to competitor drops, demand spikes, and low-stock situations. The business needed a system that could reason about multiple signals simultaneously and act in near-real time without requiring manual intervention.",
+      approaches: [
+        "We modelled the pricing decision as a contextual bandit problem, framing each hourly price decision as a choice between holding, raising, or discounting by a fixed set of tiers.",
+        "Each hour, the engine pulls the latest competitor prices via a scraping layer, reads inventory levels from the warehouse API, and retrieves a short-term demand forecast from a gradient-boosted model trained on historical sales.",
+        "These signals form the context vector fed to a LinUCB bandit that selects the price action. Chosen prices are published to a Kafka topic consumed by the e-commerce platform.",
+        "Observed revenue is fed back as the reward signal, enabling continuous online learning. A feature store backed by Redis keeps feature retrieval under 5 ms.",
+      ],
+      keyTakeaways: [
+        "Framing pricing as a bandit problem enabled continuous learning without requiring labelled ground-truth prices",
+        "Separating the demand forecast model from the pricing policy made each component independently testable and retrainable",
+        "Guardrails (minimum margin floor, maximum discount cap) are essential to prevent the bandit from exploring destructive price points",
+        "Latency matters — moving from daily batch to hourly updates captured time-sensitive opportunities that batch pricing missed entirely",
+      ],
+    },
   },
   {
     id: "price-elasticity-modelling",
@@ -87,6 +111,22 @@ export const projects: Project[] = [
     githubUrl: "https://github.com",
     demoUrl: "#",
     imageAlt: "Price elasticity credible intervals by region",
+    article: {
+      motivation:
+        "The pricing team had been applying blanket discount percentages across product categories, with no quantitative understanding of how sensitive customers were to price changes for individual SKUs. For elastic products this meant leaving revenue on the table; for inelastic ones, unnecessary margin erosion. We needed credible elasticity estimates at the product–region level, including for low-volume SKUs where point estimates from OLS would be unreliable.",
+      approaches: [
+        "We specified a Bayesian hierarchical log-log demand model in Stan. Each SKU–region combination gets its own elasticity parameter drawn from a shared category-level distribution, enabling partial pooling.",
+        "Partial pooling allows the model to share information across low-volume SKUs rather than fitting each in isolation, preventing overfitting on sparse data.",
+        "We controlled for promotions, seasonality (Fourier terms), and holidays as covariates to isolate the pure price effect.",
+        "After fitting, we ran posterior predictive checks and compared credible intervals against hold-out actuals to validate calibration.",
+      ],
+      keyTakeaways: [
+        "Hierarchical models are the right tool when you need estimates for many subgroups with varying data volumes — partial pooling prevents both under- and over-fitting",
+        "Credible intervals, not just point estimates, are what drive better business decisions: knowing uncertainty allows risk-adjusted pricing",
+        "Log-log specification gives directly interpretable elasticity coefficients and handles the multiplicative nature of demand well",
+        "Separating promotion effects from the base elasticity is critical — naive models often confound the two and produce biased estimates",
+      ],
+    },
   },
   {
     id: "markdown-optimiser",
@@ -105,6 +145,22 @@ export const projects: Project[] = [
     githubUrl: "https://github.com",
     demoUrl: "#",
     imageAlt: "Markdown schedule optimisation policy chart",
+    article: {
+      motivation:
+        "End-of-season clearance was handled with a fixed discount ladder: 20% off in week 8, 40% in week 10, 60% in week 12. This schedule ignored actual sell-through velocity, product margins, and remaining inventory, leading to either unsold stock at season end or premature deep discounts that destroyed margin. We wanted an approach that could learn when and by how much to discount each product, adapting to the observed sales trajectory in real time.",
+      approaches: [
+        "We modelled markdown scheduling as a finite-horizon Markov Decision Process. The state captures remaining inventory, weeks until end-of-season, current price tier, and recent sales velocity. The action space consists of five discount tiers.",
+        "Rewards are the gross margin earned each week, with a large penalty for unsold stock at the deadline to incentivise sufficient urgency.",
+        "We built a simulation environment calibrated on two years of historical sales data and trained a PPO agent entirely in simulation.",
+        "The trained policy is evaluated weekly: it observes the current state and outputs the recommended discount tier, which a human reviewer can override before publishing.",
+      ],
+      keyTakeaways: [
+        "Simulation fidelity is the most important factor in RL for retail — a poorly calibrated simulator will produce a policy that fails in production",
+        "The penalty for end-of-season residual stock should reflect the true cost (write-down, warehouse, disposal) to incentivise appropriate urgency",
+        "Framing the horizon as weeks remaining rather than calendar weeks makes the policy season-length agnostic and aids transfer",
+        "Keeping humans in the loop for final approval was key to building stakeholder trust in an RL-driven system",
+      ],
+    },
   },
   {
     id: "competitor-price-tracker",
@@ -123,6 +179,22 @@ export const projects: Project[] = [
     githubUrl: "https://github.com",
     demoUrl: "#",
     imageAlt: "Competitor price intelligence dashboard",
+    article: {
+      motivation:
+        "Analysts were spending several hours each week manually checking competitor websites and copy-pasting prices into a spreadsheet. Coverage was incomplete, updates were delayed by days, and there was no systematic way to detect when a competitor had repriced an entire subcategory. The business needed timely, reliable competitor price data to make reactive pricing decisions and feed into downstream models.",
+      approaches: [
+        "We built a multi-stage pipeline orchestrated by Airflow. The extraction layer uses Playwright to headlessly render JavaScript-heavy product pages and extract price and product metadata.",
+        "SKU matching uses a two-step approach: a fast fuzzy-match on product titles to generate candidates, followed by a sentence-transformer embedding similarity score to rank them.",
+        "Matches above a 0.85 cosine threshold are accepted automatically; borderline cases are queued for human review to maintain quality without full manual coverage.",
+        "Matched prices are stored in a PostgreSQL time-series table. A Streamlit dashboard surfaces daily diffs and a Slack bot fires alerts when a competitor drops a matched SKU by more than 5%.",
+      ],
+      keyTakeaways: [
+        "SKU matching is a harder problem than scraping — investing in a two-stage coarse-to-fine matcher paid dividends in accuracy",
+        "Embedding-based matching generalises to product name variations and synonyms that rule-based approaches miss",
+        "Alert fatigue is real: tuning the 5% threshold was necessary to keep Slack notifications actionable rather than noisy",
+        "A human review queue for borderline matches maintained data quality without requiring manual review of every record",
+      ],
+    },
   },
 
   // ── Experimentation ───────────────────────────────────────────────────────
@@ -143,6 +215,22 @@ export const projects: Project[] = [
     githubUrl: "https://github.com",
     demoUrl: "#",
     imageAlt: "A/B testing platform experiment dashboard",
+    article: {
+      motivation:
+        "Product teams were bottlenecked on data analysts to set up and evaluate A/B tests. Each experiment required a bespoke SQL query, a manual power calculation in a spreadsheet, and a hand-crafted analysis notebook. This meant only high-priority experiments got run, iteration velocity was slow, and statistical rigour varied widely across teams. We wanted to democratise experimentation so that any product manager could launch a well-powered, correctly analysed test without analyst involvement.",
+      approaches: [
+        "The assignment service handles user bucketing using a deterministic hash of user ID and experiment ID, ensuring stable assignments with no database round-trip.",
+        "The metrics service aggregates event data from the data warehouse nightly and computes per-variant experiment metrics automatically.",
+        "The analysis service offers two modes: a frequentist engine (Welch's t-test, chi-square) with Bonferroni correction, and a Bayesian engine that outputs posterior win probabilities and expected loss.",
+        "Guardrail metrics — latency, error rate, revenue — are always checked regardless of the primary metric, with a red/amber/green status surfaced in the UI.",
+      ],
+      keyTakeaways: [
+        "Self-serve tooling only succeeds if the UX guides users toward statistically sound choices — pre-filled power calculators and default guardrails prevented common errors",
+        "Offering both frequentist and Bayesian modes satisfied different stakeholder intuitions, and the Bayesian mode reduced pressure to peek and stop early",
+        "Guardrail metrics caught regressions in 3 experiments that looked positive on the primary metric — they are non-negotiable",
+        "Logging the randomisation seed and assignment logic in the platform made experiment auditing and debugging dramatically easier",
+      ],
+    },
   },
   {
     id: "causal-inference-pipeline",
@@ -161,6 +249,22 @@ export const projects: Project[] = [
     githubUrl: "https://github.com",
     demoUrl: "#",
     imageAlt: "Causal inference DAG and balance diagnostics",
+    article: {
+      motivation:
+        "The loyalty programme was rolled out sequentially across regions for operational reasons, making a clean randomised experiment impossible. Leadership still needed a credible estimate of its impact on 90-day retention before deciding whether to accelerate the rollout. Naively comparing early-adopter regions to control regions would conflate the programme effect with pre-existing regional differences — we needed a more rigorous approach.",
+      approaches: [
+        "Propensity score matching: we fitted a logistic regression on pre-treatment covariates (baseline retention, urban/rural split, average order value, growth rate) to predict early programme adoption, then matched treated regions to controls using nearest-neighbour matching with a caliper.",
+        "Covariate balance was verified using standardised mean differences across all 18 confounders before proceeding to outcome analysis.",
+        "Difference-in-differences: we exploited the staggered rollout timing, treating each region's rollout date as its treatment start and using the Callaway–Sant'Anna estimator to handle staggered adoption correctly.",
+        "We ran both approaches independently and checked that estimates agreed, providing triangulated evidence for the causal claim.",
+      ],
+      keyTakeaways: [
+        "Covariate balance checks are not optional — they are how you verify that matching actually created comparable groups",
+        "Staggered DiD requires more care than canonical DiD; the Callaway–Sant'Anna estimator avoids the forbidden comparison problem that biases TWFE in heterogeneous treatment effect settings",
+        "Triangulating across multiple estimators (PSM, IPW, DiD) is the strongest argument for robustness when you cannot run an RCT",
+        "Sensitivity analysis (Rosenbaum bounds) quantified how large an unmeasured confounder would need to be to invalidate the conclusion — it was reassuringly large",
+      ],
+    },
   },
   {
     id: "multi-armed-bandit",
@@ -179,6 +283,22 @@ export const projects: Project[] = [
     githubUrl: "https://github.com",
     demoUrl: "#",
     imageAlt: "Thompson Sampling posterior distributions over time",
+    article: {
+      motivation:
+        "Fixed 50/50 A/B splits are wasteful when one variant is clearly better early in the experiment: you are knowingly sending half your traffic to a worse experience for the entire test duration. For content experiments on the homepage — where variants are short-lived and business impact is high — we wanted an approach that would shift traffic toward the better variant as evidence accumulated, while still collecting enough data to make a confident decision.",
+      approaches: [
+        "Each content variant starts with a Beta(1,1) uniform prior over its click-through rate. On each page request, we sample a CTR from each variant's posterior and serve the variant with the highest sample.",
+        "On each observed click or non-click, we update the corresponding Beta distribution (increment α for a click, β for a non-click), keeping the model current in real time.",
+        "Posteriors are stored in Redis for sub-millisecond read latency and updated atomically to avoid race conditions under high traffic.",
+        "The CMS calls a FastAPI endpoint to get the variant assignment, passing a stable user ID so that each user sees the same variant within a session for consistency.",
+      ],
+      keyTakeaways: [
+        "Thompson Sampling is simple to implement with conjugate priors and performs comparably to more complex bandit algorithms in practice",
+        "Storing posteriors in Redis rather than a relational database was necessary to meet the latency requirements of a synchronous content-serving API",
+        "Session consistency (same user always sees the same variant) is important for user experience but requires careful thought about how it interacts with exploration",
+        "Bandits are not a replacement for A/B tests when you need a clean statistical inference — use bandits when minimising regret during the experiment matters more than a sharp post-hoc p-value",
+      ],
+    },
   },
   {
     id: "experiment-analysis-toolkit",
@@ -197,6 +317,22 @@ export const projects: Project[] = [
     githubUrl: "https://github.com",
     demoUrl: "#",
     imageAlt: "Experiment analysis toolkit power curve visualisation",
+    article: {
+      motivation:
+        "Despite having an experimentation platform, data scientists were still writing bespoke analysis code for every experiment. Common mistakes kept recurring: not adjusting for multiple comparisons, peeking at results and stopping early, and running under-powered tests because sample-size calculations were done informally. We needed a shared library that encoded best practices so that correct analysis was the path of least resistance.",
+      approaches: [
+        "The variance module implements CUPED: it regresses the post-experiment metric on the pre-experiment covariate and uses the residuals as the analysis metric, reducing variance without introducing bias.",
+        "The corrections module implements Benjamini-Hochberg FDR correction and Bonferroni for multiple metric testing, accepting a dict of metric names to p-values and returning adjusted values.",
+        "The sequential module implements an O'Brien-Fleming alpha-spending function, allowing analysts to peek at results at pre-specified interim points without inflating Type I error.",
+        "All modules are designed to work with pandas DataFrames and return tidy DataFrames, fitting naturally into existing Jupyter notebook workflows.",
+      ],
+      keyTakeaways: [
+        "CUPED is one of the highest-ROI additions to an experimentation toolkit — the variance reduction is often 20–40%, directly translating to shorter required test durations",
+        "Packaging best practices as functions rather than documentation dramatically increases adoption — people use what is convenient",
+        "Alpha-spending functions make sequential testing statistically rigorous; combined with CUPED they allow shorter experiments without sacrificing validity",
+        "Tidy, DataFrame-native APIs were key to adoption in a Python/Jupyter-centric data science organisation",
+      ],
+    },
   },
 ];
 
