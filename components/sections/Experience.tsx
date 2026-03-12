@@ -2,8 +2,65 @@
 
 import { motion } from "framer-motion";
 import { Briefcase, GraduationCap, MapPin, Calendar } from "lucide-react";
-import { timelineEntries } from "@/lib/data/experience";
+import { timelineEntries, TimelineEntry } from "@/lib/data/experience";
 import { fadeUp, slideInLeft, slideInRight, stagger } from "@/lib/animations";
+
+// Show end year if finished, start year if ongoing ("Present")
+function getDisplayYear(date: string): string {
+  if (date.includes("Present")) {
+    const match = date.match(/\d{4}/);
+    return match ? match[0] : "";
+  }
+  const matches = date.match(/\d{4}/g);
+  return matches ? matches[matches.length - 1] : "";
+}
+
+function EntryCard({ entry, side }: { entry: TimelineEntry; side: "left" | "right" }) {
+  const iconColor = entry.type === "work" ? "#7c3aed" : "#a855f7";
+  const alignEnd = side === "left";
+
+  return (
+    <div className="glass-card p-5 hover:shadow-lg transition-shadow duration-300">
+      {/* Badge */}
+      <div className={`flex items-center gap-2 mb-2 ${alignEnd ? "justify-end" : "justify-start"}`}>
+        <span
+          className="px-2.5 py-0.5 rounded-full text-xs font-semibold"
+          style={{ color: iconColor, background: `${iconColor}20`, border: `1px solid ${iconColor}40` }}
+        >
+          {entry.type === "work" ? "Work" : "Education"}
+        </span>
+      </div>
+
+      {/* Date */}
+      <div className={`flex items-center gap-1 text-xs text-[var(--accent-light)] mb-2 ${alignEnd ? "justify-end" : "justify-start"}`}>
+        <Calendar size={11} />
+        {entry.date}
+      </div>
+
+      {/* Title */}
+      <h3 className={`font-heading font-bold text-base text-[var(--foreground)] mb-1 ${alignEnd ? "text-right" : "text-left"}`}>
+        {entry.title}
+      </h3>
+
+      {/* Org + location */}
+      <div className={`flex items-center gap-1.5 text-sm text-[var(--muted)] mb-3 flex-wrap ${alignEnd ? "justify-end" : "justify-start"}`}>
+        <span className="gradient-text font-medium">{entry.organisation}</span>
+        <span>·</span>
+        <MapPin size={11} className="shrink-0" />
+        <span>{entry.location}</span>
+      </div>
+
+      {/* Bullets */}
+      <ul className={`space-y-1.5 ${alignEnd ? "text-right" : "text-left"}`}>
+        {entry.bullets.map((bullet, i) => (
+          <li key={i} className="text-sm text-[var(--muted)] leading-relaxed">
+            {bullet}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function Experience() {
   return (
@@ -25,11 +82,11 @@ export default function Experience() {
           </h2>
         </motion.div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line — hidden on mobile, shown on md+ */}
+        {/* ── Desktop: alternating left/right timeline ── */}
+        <div className="hidden md:block relative">
+          {/* Full-height center line */}
           <div
-            className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2"
+            className="absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 pointer-events-none"
             style={{ background: "linear-gradient(180deg, #7c3aed, #a855f7)" }}
           />
 
@@ -38,111 +95,84 @@ export default function Experience() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
-            className="flex flex-col gap-12"
+            className="flex flex-col gap-8"
           >
-            {timelineEntries.map((entry, index) => {
-              const isLeft = index % 2 === 0;
-              const Icon = entry.type === "work" ? Briefcase : GraduationCap;
+            {timelineEntries.map((entry, idx) => {
+              const isLeft = idx % 2 === 0;
               const iconColor = entry.type === "work" ? "#7c3aed" : "#a855f7";
+              const Icon = entry.type === "work" ? Briefcase : GraduationCap;
 
               return (
                 <motion.div
                   key={entry.id}
                   variants={isLeft ? slideInLeft : slideInRight}
-                  className={`relative flex items-start gap-8 md:gap-0 ${
-                    isLeft ? "md:flex-row" : "md:flex-row-reverse"
-                  }`}
+                  className="grid grid-cols-[1fr_5rem_1fr] items-start"
                 >
-                  {/* Content card */}
-                  <div
-                    className={`w-full md:w-[calc(50%-2rem)] ${
-                      isLeft ? "md:pr-8 md:text-right" : "md:pl-8 md:text-left"
-                    }`}
-                  >
-                    <div className="glass-card p-6 hover:shadow-lg transition-shadow duration-300">
-                      {/* Type badge */}
-                      <div
-                        className={`flex items-center gap-2 mb-3 ${
-                          isLeft ? "md:justify-end" : "md:justify-start"
-                        }`}
-                      >
-                        <span
-                          className="px-3 py-0.5 rounded-full text-xs font-semibold text-white"
-                          style={{
-                            background:
-                              entry.type === "work"
-                                ? "rgba(124, 58, 237, 0.25)"
-                                : "rgba(168, 85, 247, 0.25)",
-                            border: `1px solid ${iconColor}40`,
-                            color: iconColor,
-                          }}
-                        >
-                          {entry.type === "work" ? "Work" : "Education"}
-                        </span>
-                      </div>
+                  {/* Left side */}
+                  {isLeft ? (
+                    <div className="pr-5">
+                      <EntryCard entry={entry} side="left" />
+                    </div>
+                  ) : (
+                    <div />
+                  )}
 
-                      {/* Date */}
-                      <div
-                        className={`flex items-center gap-1.5 text-xs text-[var(--accent-light)] mb-2 ${
-                          isLeft ? "md:justify-end" : "md:justify-start"
-                        }`}
-                      >
-                        <Calendar size={12} />
-                        {entry.date}
-                      </div>
-
-                      {/* Title & org */}
-                      <h3 className="font-heading font-bold text-base text-[var(--foreground)] mb-1">
-                        {entry.title}
-                      </h3>
-                      <div
-                        className={`flex items-center gap-1.5 text-sm text-[var(--muted)] mb-4 ${
-                          isLeft ? "md:justify-end" : "md:justify-start"
-                        }`}
-                      >
-                        <span className="gradient-text font-medium">{entry.organisation}</span>
-                        <span>·</span>
-                        <MapPin size={12} className="shrink-0" />
-                        <span>{entry.location}</span>
-                      </div>
-
-                      {/* Bullets */}
-                      <ul
-                        className={`space-y-1.5 ${
-                          isLeft ? "md:text-right" : "md:text-left"
-                        }`}
-                      >
-                        {entry.bullets.map((bullet, i) => (
-                          <li key={i} className="text-sm text-[var(--muted)] leading-relaxed">
-                            {bullet}
-                          </li>
-                        ))}
-                      </ul>
+                  {/* Center dot + year */}
+                  <div className="flex flex-col items-center pt-3 z-10">
+                    <span
+                      className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap mb-1"
+                      style={{ color: iconColor, background: "var(--background)", border: `1px solid ${iconColor}50` }}
+                    >
+                      {getDisplayYear(entry.date)}
+                    </span>
+                    <div
+                      className="w-9 h-9 rounded-full border-2 flex items-center justify-center bg-[var(--background)]"
+                      style={{ borderColor: iconColor }}
+                    >
+                      <Icon size={15} style={{ color: iconColor }} />
                     </div>
                   </div>
 
-                  {/* Center dot */}
-                  <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full border-2 items-center justify-center bg-[var(--background)] z-10"
-                    style={{ borderColor: iconColor }}
-                  >
-                    <Icon size={16} style={{ color: iconColor }} />
-                  </div>
-
-                  {/* Mobile left dot */}
-                  <div
-                    className="md:hidden shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center bg-[var(--background)] mt-1"
-                    style={{ borderColor: iconColor }}
-                  >
-                    <Icon size={14} style={{ color: iconColor }} />
-                  </div>
-
-                  {/* Spacer for alternating layout */}
-                  <div className="hidden md:block md:w-[calc(50%-2rem)]" />
+                  {/* Right side */}
+                  {!isLeft ? (
+                    <div className="pl-5">
+                      <EntryCard entry={entry} side="right" />
+                    </div>
+                  ) : (
+                    <div />
+                  )}
                 </motion.div>
               );
             })}
           </motion.div>
         </div>
+
+        {/* ── Mobile: single column ── */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="md:hidden flex flex-col gap-4"
+        >
+          {timelineEntries.map((entry) => {
+            const Icon = entry.type === "work" ? Briefcase : GraduationCap;
+            const iconColor = entry.type === "work" ? "#7c3aed" : "#a855f7";
+            return (
+              <motion.div key={entry.id} variants={fadeUp} className="flex gap-4 items-start">
+                <div
+                  className="shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center bg-[var(--background)] mt-1"
+                  style={{ borderColor: iconColor }}
+                >
+                  <Icon size={14} style={{ color: iconColor }} />
+                </div>
+                <div className="flex-1">
+                  <EntryCard entry={entry} side="right" />
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );
