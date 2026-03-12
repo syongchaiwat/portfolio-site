@@ -209,7 +209,7 @@ export default function Projects() {
             initial="hidden"
             animate="visible"
             exit={{ opacity: 0, y: 8, transition: { duration: 0.15 } }}
-            className="grid md:grid-cols-2 gap-6"
+            className="grid md:grid-cols-2 gap-6 items-start"
           >
             {filtered.map((project) => {
               const isExpanded = expandedId === project.id;
@@ -218,7 +218,6 @@ export default function Projects() {
                 <motion.div
                   key={project.id}
                   variants={fadeUp}
-                  layout
                   className="glass-card overflow-hidden cursor-pointer group"
                   whileHover={!isExpanded ? { scale: 1.01, y: -4 } : {}}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
