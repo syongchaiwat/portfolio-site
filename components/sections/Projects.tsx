@@ -24,7 +24,7 @@ function ArticleModal({ project, onClose }: { project: Project; onClose: () => v
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 16 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-2xl max-h-[85vh] overflow-y-auto glass-card p-8"
+        className="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-y-auto glass-card p-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -54,7 +54,11 @@ function ArticleModal({ project, onClose }: { project: Project; onClose: () => v
             </span>
             Motivation
           </h4>
-          <p className="text-sm text-[var(--muted)] leading-relaxed pl-7">{article.motivation}</p>
+          <div className="text-sm text-[var(--muted)] leading-relaxed pl-7 space-y-3">
+            {article.motivation.split("\n\n").map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
         </div>
 
         {/* Divider */}

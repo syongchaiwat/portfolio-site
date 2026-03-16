@@ -49,6 +49,13 @@ lib/
     projects.ts             # Project[] with category, article (optional), outcomes, tags
     skills.ts               # skillGroups[]
     experience.ts           # TimelineEntry[] (type: "work"|"education")
+
+content/
+  projects/
+    _template.md                  # template with frontmatter + body structure
+    ai-llm/                       # source .md files for AI / LLM projects
+    pricing-optimization/         # source .md files for Pricing Optimization projects
+    experimentation/              # source .md files for Experimentation projects
 ```
 
 ## Section Details
@@ -61,8 +68,44 @@ lib/
 - **AI / LLM** projects link to GitHub (`githubUrl`); no `article` field
 - **Pricing Optimization** and **Experimentation** projects have an `article` field (no GitHub link shown)
 - `article` shape: `{ motivation: string; approaches: string[]; keyTakeaways: string[] }`
-- "Read Article" button opens `ArticleModal` (full-screen backdrop, click outside or Escape to close)
+- `article.motivation` supports multiple paragraphs separated by `\n\n` — rendered as separate `<p>` tags in the modal
+- "Read Article" button opens `ArticleModal` (`max-w-3xl`, `max-h-[85vh]` scrollable, click outside or Escape to close)
 - `ProjectCategory` type and `PROJECT_CATEGORIES` array are exported from `projects.ts`
+- Display order within each category is determined by array order in `projects.ts` (matches `order` frontmatter field in source `.md` files)
+
+### Content Files (`content/projects/`)
+Source markdown files for all Pricing Optimization and Experimentation projects. Use `/sync-projects` to regenerate `projects.ts` from these files.
+
+**File naming:** `{project-id}.md` — kebab-case matching the `id` field in `projects.ts`
+
+**Frontmatter fields:**
+```yaml
+---
+id: kebab-case-id
+category: AI / LLM | Pricing Optimization | Experimentation
+order: 1                    # display order within the category tab
+tags: [Tag1, Tag2, Tag3]
+demoUrl: "#"
+imageAlt: description
+shortDescription: One sentence shown on the collapsed card.
+# githubUrl: https://...   # AI / LLM only
+---
+```
+
+**Body sections (in order):**
+- `# Title` → `title`
+- `> tagline` → used as reference for `shortDescription`
+- `**Skills:** ...` → `tags` (title-cased)
+- `## Key Outcomes` bullets → `outcomes[]`
+- `## Article` → `article` object
+  - `### Motivation` (one or more paragraphs, separated by blank lines)
+  - `### Approaches` (bullet list — bold headers are stripped when entering `projects.ts`)
+  - `### Key Takeaways` (bullet list — bold headers are stripped when entering `projects.ts`)
+
+**Adding a new project:**
+1. Create `content/projects/{category-folder}/{project-id}.md` using `_template.md`
+2. Fill in frontmatter and all body sections
+3. Run `/sync-projects` to regenerate `projects.ts`
 
 ### Experience (`Experience.tsx` + `lib/data/experience.ts`)
 - Entries alternate left/right by index (even → left, odd → right)
