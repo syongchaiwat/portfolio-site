@@ -48,7 +48,7 @@ lib/
   data/
     projects.ts             # Project[] with category, article (optional), outcomes, tags
     skills.ts               # skillGroups[]
-    experience.ts           # TimelineEntry[] (type: "work"|"education")
+    experience.ts           # TimelineEntry[] (type: "work"|"education"|"bootcamp")
 
 content/
   projects/
@@ -56,6 +56,8 @@ content/
     ai-llm/                       # source .md files for AI / LLM projects
     pricing-optimization/         # source .md files for Pricing Optimization projects
     experimentation/              # source .md files for Experimentation projects
+  experience/
+    experience.md                 # source for all timeline entries (work, education, bootcamp)
 ```
 
 ## Section Details
@@ -113,6 +115,30 @@ shortDescription: One sentence shown on the collapsed card.
 - Center column: year badge + icon dot; year shown is **end year** if finished, **start year** if "Present"
 - `getDisplayYear(date)`: returns last 4-digit year unless date contains "Present" (returns first)
 - Mobile: single column with dot on left
+
+### Content Files — Experience (`content/experience/experience.md`)
+Source for all timeline entries. Use `/sync-experience` to regenerate `lib/data/experience.ts`.
+
+**Entry format** (one per block, separated by the next frontmatter `---`):
+```
+---
+id: kebab-case-id
+type: work | education | bootcamp
+date: MMM YYYY – MMM YYYY   (or "MMM YYYY – Present")
+title: Job title or degree name
+organisation: Organisation name
+location: City, Country
+---
+
+- Bullet point one
+- Bullet point two
+```
+
+**Rules:**
+- Entry order in the file = display order in the timeline (top = most recent)
+- Valid `type` values: `"work"`, `"education"`, `"bootcamp"`
+- Date format: `"MMM YYYY – MMM YYYY"` or `"MMM YYYY – Present"`
+- To add/edit/remove an entry: edit `experience.md`, then run `/sync-experience`
 
 ### Contact (`Contact.tsx`)
 - Social link cards only — no contact form

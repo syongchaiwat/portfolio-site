@@ -40,5 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Claude Code local memory
-.claude/
+# Claude Code local memory (exclude local settings, but track project commands)
+.claude/settings.local.json
+.claude/projects/
+.claude/todos/
