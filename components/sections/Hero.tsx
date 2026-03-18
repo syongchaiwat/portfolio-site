@@ -22,7 +22,6 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Typing effect
   useEffect(() => {
     const current = titles[titleIndex];
     const speed = isDeleting ? 50 : 100;
@@ -107,7 +106,7 @@ export default function Hero() {
           <span className="cursor-blink text-[var(--accent-light)]">|</span>
         </motion.div>
 
-        {/* Master's tag */}
+        {/* Tagline */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

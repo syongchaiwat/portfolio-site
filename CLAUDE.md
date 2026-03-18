@@ -36,8 +36,8 @@ components/
     Footer.tsx      # social icons + copyright
     ThemeProvider.tsx
   sections/
-    Hero.tsx        # typing animation cycling ["Data Scientist","Data Analyst","ML Engineer"]
-    About.tsx       # 2-col layout, profile photo with gradient ring, "SY" initials fallback
+    Hero.tsx        # 2-col layout (photo left, text right); typing animation; profile photo with gradient ring; "SY" initials fallback
+    About.tsx       # NOT rendered — kept as reference only (was removed from page.tsx)
     Skills.tsx      # skill group glass cards (grid sm:grid-cols-2 lg:grid-cols-3)
     Projects.tsx    # category filter tabs + expandable accordion cards + article modal
     Experience.tsx  # alternating left/right timeline (dot + year per entry)
