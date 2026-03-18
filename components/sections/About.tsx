@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
 import { fadeUp, stagger } from "@/lib/animations";
 
 const stats = [
@@ -11,6 +12,8 @@ const stats = [
 ];
 
 export default function About() {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <section id="about" className="py-24 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
@@ -46,22 +49,20 @@ export default function About() {
                 style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}
               />
               <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden border-2 border-[var(--surface)]">
-                <Image
-                  src="/profile.jpg"
-                  alt="Sarunchana Yongchaiwathana"
-                  fill
-                  className="object-cover"
-                  priority
-                  onError={(e) => {
-                    // Fallback to initials if image not found
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = "none";
-                  }}
-                />
-                {/* Fallback initials */}
-                <div className="absolute inset-0 flex items-center justify-center bg-[var(--surface-2)]">
-                  <span className="text-6xl font-heading font-bold gradient-text">SY</span>
-                </div>
+                {imgError ? (
+                  <div className="absolute inset-0 flex items-center justify-center bg-[var(--surface-2)]">
+                    <span className="text-6xl font-heading font-bold gradient-text">SY</span>
+                  </div>
+                ) : (
+                  <Image
+                    src="/profile.jpg"
+                    alt="Sarunchana Yongchaiwathana"
+                    fill
+                    className="object-cover"
+                    priority
+                    onError={() => setImgError(true)}
+                  />
+                )}
               </div>
 
               {/* Floating badge */}
