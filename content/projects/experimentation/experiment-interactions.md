@@ -2,7 +2,7 @@
 id: experiment-interactions
 category: Experimentation
 order: 2
-tags: [Interaction Testing, Variance Decomposition, Statistical Hypothesis Testing, Experiment Design, Statistical Approximation]
+tags: [Interaction Testing, Causal Inference, Hypothesis Testing, Experiment Design, Statistical Approximation]
 demoUrl: "#"
 imageAlt: Experiment interaction four-cell design and variance formula derivation
 shortDescription: A statistical framework for testing whether two overlapping A/B tests are interfering with each other — and why the intuitive approximation gets the math wrong in ways that matter.

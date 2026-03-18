@@ -2,7 +2,7 @@
 id: rl-cap-management
 category: Pricing Optimization
 order: 3
-tags: [Reinforcement Learning, Constraint Optimization, Pricing Strategy, Signal Design, Cost-Benefit Analysis, Production ML]
+tags: [Reinforcement Learning, Constraint Optimization, Pricing Strategy, Cost-Benefit Analysis, Production ML]
 demoUrl: "#"
 imageAlt: RL step size under three-factor environment-change detection function
 shortDescription: Designing intelligent slowdown mechanisms for production reinforcement learning models — preventing overshooting when market conditions shift, without permanently handicapping optimization range.

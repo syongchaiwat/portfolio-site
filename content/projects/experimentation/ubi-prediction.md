@@ -2,7 +2,7 @@
 id: ubi-prediction
 category: Experimentation
 order: 1
-tags: [CatBoost, Binary Classification, Temporal Train/Test Split, Feature Engineering, Model Evaluation, Experiment Design]
+tags: [Tree-based Model, Binary Classification, Feature Engineering, Model Evaluation, Experiment Design]
 demoUrl: "#"
 imageAlt: UBI prediction classifier performance across experiment run stages
 shortDescription: A machine learning classifier trained on early experiment signals to predict whether a running A/B test will produce a positive business impact, enabling earlier decisions without extending run duration.

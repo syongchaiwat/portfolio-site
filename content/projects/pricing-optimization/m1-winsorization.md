@@ -2,7 +2,7 @@
 id: m1-winsorization
 category: Pricing Optimization
 order: 4
-tags: [Statistical Signal Processing, Outlier Detection, Variance Reduction, Pricing Analytics, Parameter Fitting, Multi-Market Analysis]
+tags: [Outlier Detection, Variance Reduction, Pricing Analytics, Parameter Fitting]
 demoUrl: "#"
 imageAlt: Remaining LTC% by destination under fixed vs. dynamic winsorization thresholds
 shortDescription: Replacing a fixed outlier-clipping threshold with a dynamic, destination-aware formula — reducing variance in the pricing signal while treating large and small markets proportionally.

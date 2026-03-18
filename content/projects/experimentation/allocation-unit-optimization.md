@@ -2,7 +2,7 @@
 id: allocation-unit-optimization
 category: Experimentation
 order: 4
-tags: [Variance Decomposition, Signal-to-Noise Analysis, Intraclass Correlation, Causal Inference, Experiment Design]
+tags: [Signal-to-Noise Analysis, Causal Inference, Experiment Design]
 demoUrl: "#"
 imageAlt: MDE comparison across user-level, session-level, and compound allocation units by page type
 shortDescription: An empirical investigation into whether finer-grained allocation units — session-level or compound user×property — can reduce experiment duration for front-end teams, without introducing causal contamination or cannibalization.

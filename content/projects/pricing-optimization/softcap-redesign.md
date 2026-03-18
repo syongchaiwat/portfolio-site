@@ -2,7 +2,7 @@
 id: softcap-redesign
 category: Pricing Optimization
 order: 2
-tags: [Algorithm Design, Optimization Geometry, Reinforcement Learning, Production System Implementation, Parameter Tuning, Cross-Team Technical Communication]
+tags: [Algorithm Design, Production System Implementation, Parameter Tuning, Optimization, Cross-Team Technical Communication]
 demoUrl: "#"
 imageAlt: Downlift-cashback constraint triangle showing sensitive and insensitive regions under old and new capping logic
 shortDescription: Replacing a sequential hard-capping algorithm with a simultaneous soft-capping system — transforming large "insensitive" regions of the optimization space into regions where price signals can actually be read and acted on.

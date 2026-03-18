@@ -2,7 +2,7 @@
 id: hazard-rate-cashback
 category: Pricing Optimization
 order: 1
-tags: [Survival Analysis, Hazard Rate Modeling, LightGBM, Statistical Decomposition, Time-Series Prediction, Chronological Train/Test Design, ML Production Pipelines, Model Calibration]
+tags: [Hazard Rate Modeling, LightGBM, Metric Decomposition, Time-Series Prediction, Production ML, Model Calibration]
 demoUrl: "#"
 imageAlt: Hazard rate curves across the 120-day cashback claimability window
 shortDescription: Replacing a static claim rate predictor with a hazard rate model — enabling fresher training data, daily-updating predictions, and a more correct logical framing of the cashback claimability timeline.
