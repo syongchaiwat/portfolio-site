@@ -20,35 +20,28 @@ export const skillGroups: SkillGroup[] = [
     icon: "🤖",
     skills: [
       "scikit-learn",
-      "XGBoost",
       "LightGBM",
       "Feature Engineering",
       "SHAP",
       "Model Evaluation",
+      "PyTorch",
+      "TensorFlow",
     ],
-  },
-  {
-    category: "Deep Learning",
-    icon: "🧠",
-    skills: ["PyTorch", "TensorFlow", "Keras", "CNNs", "RNNs", "Transformers", "Grad-CAM"],
   },
   {
     category: "LLMs & GenAI",
     icon: "✨",
     skills: [
-      "LangChain",
       "RAG",
-      "Fine-Tuning",
-      "LoRA / QLoRA",
       "Prompt Engineering",
-      "HuggingFace",
       "FAISS",
+      "Claude Code"
     ],
   },
   {
     category: "Big Data",
     icon: "📊",
-    skills: ["Apache Spark", "Hadoop", "PySpark", "SQL", "BigQuery", "dbt"],
+    skills: ["Apache Spark", "Hadoop", "PySpark", "SQL", "BigQuery"],
   },
 ];
 

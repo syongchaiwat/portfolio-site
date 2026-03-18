@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, GraduationCap, MapPin, Calendar } from "lucide-react";
+import { Briefcase, GraduationCap, FlaskConical, MapPin, Calendar } from "lucide-react";
 import { timelineEntries, TimelineEntry } from "@/lib/data/experience";
 import { fadeUp, slideInLeft, slideInRight, stagger } from "@/lib/animations";
 
@@ -16,7 +16,10 @@ function getDisplayYear(date: string): string {
 }
 
 function EntryCard({ entry, side }: { entry: TimelineEntry; side: "left" | "right" }) {
-  const iconColor = entry.type === "work" ? "#7c3aed" : "#a855f7";
+  const iconColor =
+    entry.type === "work" ? "#7c3aed" :
+    entry.type === "bootcamp" ? "#a53dd1" :
+    "#a855f7";
   const alignEnd = side === "left";
 
   return (
@@ -27,7 +30,7 @@ function EntryCard({ entry, side }: { entry: TimelineEntry; side: "left" | "righ
           className="px-2.5 py-0.5 rounded-full text-xs font-semibold"
           style={{ color: iconColor, background: `${iconColor}20`, border: `1px solid ${iconColor}40` }}
         >
-          {entry.type === "work" ? "Work" : "Education"}
+          {entry.type === "work" ? "Work" : entry.type === "bootcamp" ? "Bootcamp" : "Education"}
         </span>
       </div>
 
@@ -99,8 +102,14 @@ export default function Experience() {
           >
             {timelineEntries.map((entry, idx) => {
               const isLeft = idx % 2 === 0;
-              const iconColor = entry.type === "work" ? "#7c3aed" : "#a855f7";
-              const Icon = entry.type === "work" ? Briefcase : GraduationCap;
+              const iconColor =
+                entry.type === "work" ? "#7c3aed" :
+                entry.type === "bootcamp" ? "#a53dd1" :
+                "#a855f7";
+              const Icon =
+                entry.type === "work" ? Briefcase :
+                entry.type === "bootcamp" ? FlaskConical :
+                GraduationCap;
 
               return (
                 <motion.div
@@ -156,8 +165,14 @@ export default function Experience() {
           className="md:hidden flex flex-col gap-4"
         >
           {timelineEntries.map((entry) => {
-            const Icon = entry.type === "work" ? Briefcase : GraduationCap;
-            const iconColor = entry.type === "work" ? "#7c3aed" : "#a855f7";
+            const Icon =
+              entry.type === "work" ? Briefcase :
+              entry.type === "bootcamp" ? FlaskConical :
+              GraduationCap;
+            const iconColor =
+              entry.type === "work" ? "#7c3aed" :
+              entry.type === "bootcamp" ? "#a53dd1" :
+              "#a855f7";
             return (
               <motion.div key={entry.id} variants={fadeUp} className="flex gap-4 items-start">
                 <div
