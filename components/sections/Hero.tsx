@@ -7,7 +7,9 @@ import { Github, Linkedin, Mail, Youtube, ChevronDown, Download } from "lucide-r
 const titles = [
   "Data Scientist",
   "Data Analyst",
-  "ML Engineer",
+  "Applied Scientist",
+  "Problem Solver",
+  "Lifelong Learner"
 ];
 
 const socials = [
@@ -33,10 +35,11 @@ export default function Hero() {
           setTimeout(() => setIsDeleting(true), 1800);
         }
       } else {
-        setDisplayText(current.slice(0, displayText.length - 1));
         if (displayText.length === 0) {
           setIsDeleting(false);
           setTitleIndex((i) => (i + 1) % titles.length);
+        } else {
+          setDisplayText(current.slice(0, displayText.length - 1));
         }
       }
     }, speed);
@@ -113,9 +116,10 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="text-base md:text-lg text-[var(--muted)] max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          Master&apos;s Student in AI, passionate about building intelligent systems
-          that turn raw data into actionable insight. Specialising in LLMs, deep learning,
-          and end-to-end ML pipelines.
+          Data Scientist with industry experience in production ML, pricing optimization,
+          and large-scale A/B testing. Pursuing an MSc in AI at UZH, with a growing
+          interest in bringing these methods to finance and healthcare — where good decisions
+          from messy data really matter.
         </motion.p>
 
         {/* CTAs */}
