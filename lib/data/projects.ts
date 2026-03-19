@@ -292,40 +292,40 @@ export const projects: Project[] = [
 
   // ── AI / LLM ──────────────────────────────────────────────────────────────
   {
-    id: "rag-document-qa",
+    id: "kg-chatbot",
     category: "AI / LLM",
-    title: "RAG-Powered Document Q&A",
+    title: "Knowledge Graph Movie Chatbot",
     shortDescription:
-      "An intelligent document Q&A system using Retrieval-Augmented Generation for accurate, context-aware answers.",
+      "A movie chatbot that routes questions to a knowledge graph via auto-generated SPARQL for factual accuracy, using a local LLM only for natural language parsing and response generation.",
     longDescription:
-      "Built a production-ready RAG pipeline that ingests PDFs and documents, chunks them semantically, embeds them into a FAISS vector store, and retrieves relevant context for an LLM to answer user queries. The system handles multi-turn conversations and cites source passages for transparency.",
+      "A movie Q&A chatbot that combines a knowledge graph, LLM, and RAG to deliver accurate, human-like responses. An RDF knowledge graph serves as the source of truth, while FAISS retrieves semantically relevant SPARQL examples and predicates to guide the LLM in generating correct queries. A local Qwen3 4B model handles both intent classification and natural-language response synthesis, keeping hallucination risk confined to presentation rather than retrieval.",
     outcomes: [
-      "Achieved 89% answer accuracy on a benchmark dataset of 500 domain-specific questions",
-      "Reduced hallucination rate by 62% compared to a naive GPT-4 baseline",
-      "Processes 100-page documents in under 10 seconds using async chunking",
+      "Built a multi-intent routing pipeline that classifies each user question as factual, embedding-based, recommendation, or multimedia — dispatching to the correct handler before generating a response",
+      "For factual questions, used FAISS to retrieve relevant SPARQL examples and KG predicates semantically matching the user's query, feeding them as few-shot context so the LLM generates accurate SPARQL — queries the RDF graph directly and falls back to automatic repair-and-retry on failure",
+      "Used the LLM (Qwen3 4B via Ollama, running fully locally) at both ends of the pipeline — to classify and parse the user's intent, and to synthesise a fluent natural-language answer from the structured KG result — keeping hallucination risk contained to presentation, not retrieval",
     ],
-    tags: ["LangChain", "OpenAI", "FAISS", "Python", "FastAPI", "RAG"],
-    githubUrl: "https://github.com",
+    tags: ["Knowledge Graph", "SPARQL", "RDF", "RAG", "Ollama", "FAISS", "Sentence Transformers", "Collaborative Filtering"],
+    githubUrl: "https://github.com/syongchaiwat/pearlSpinnerTopBruh",
     demoUrl: "#",
-    imageAlt: "RAG pipeline architecture diagram",
+    imageAlt: "Knowledge graph chatbot architecture — SPARQL query generation and multi-intent routing",
   },
   {
-    id: "llm-finetuning",
+    id: "portfolio-vibe-code",
     category: "AI / LLM",
-    title: "Domain-Specific LLM Fine-Tuning",
+    title: "Portfolio Site Built with Claude Code",
     shortDescription:
-      "Fine-tuned Llama 3 on a proprietary legal corpus using LoRA, achieving GPT-4-level performance at 1/10th the cost.",
+      "A personal portfolio site built entirely with Claude Code — structured so that all content lives in markdown source files and a single slash command syncs them to TypeScript, making updates feel effortless.",
     longDescription:
-      "Curated a dataset of 50,000 legal Q&A pairs and fine-tuned Llama 3 8B using QLoRA (4-bit quantisation + LoRA adapters) on a single A100 GPU. Implemented RLHF-style preference tuning using DPO to align outputs with expert attorney feedback. Evaluated against GPT-4 using LLM-as-judge methodology.",
+      "A Next.js portfolio site generated from scratch through iterative prompting with Claude Code. The project centres on a well-crafted CLAUDE.md that encodes every component convention, data rule, and CSS variable so Claude behaves consistently across sessions. All project and experience data lives in human-readable markdown files, with custom slash commands that instruct Claude to parse and regenerate the TypeScript data layer on demand.",
     outcomes: [
-      "Matched GPT-4 on 78% of legal reasoning tasks in blind evaluation",
-      "Reduced inference cost by 90% vs. GPT-4 API at equivalent quality",
-      "Full fine-tuning pipeline completed in under 6 hours on a single GPU",
+      "Built a master context file (CLAUDE.md) that describes every component, data convention, CSS variable, and behavioural rule — so Claude consistently generates correct code and respects project constraints without repeating instructions each session",
+      "Designed a content-first sync workflow where all project and experience data lives in human-readable markdown files; two custom slash commands (`/sync-projects`, `/sync-experience`) instruct Claude to parse the markdown and regenerate TypeScript data files, so adding a new project requires only writing a `.md` file and running one command",
+      "Generated every section of the site (Hero, Skills, Projects accordion, Experience timeline, Contact) through iterative prompting with no manual code written, demonstrating that clear project structure and consistent conventions reduce agentic errors and make ongoing updates fast",
     ],
-    tags: ["HuggingFace", "Llama 3", "LoRA", "QLoRA", "DPO", "PEFT", "Transformers"],
-    githubUrl: "https://github.com",
+    tags: ["Claude Code", "Prompt Engineering", "Next.js", "TypeScript", "Vibe Coding", "Agentic Workflow"],
+    githubUrl: "https://github.com/syongchaiwat/portfolio-site",
     demoUrl: "#",
-    imageAlt: "LLM fine-tuning pipeline with LoRA adapters",
+    imageAlt: "Portfolio site built with Claude Code — content-first markdown architecture",
   },
 ];
 
