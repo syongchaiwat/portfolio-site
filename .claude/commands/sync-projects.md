@@ -2,6 +2,12 @@
 
 Regenerate `lib/data/projects.ts` from the source markdown files in `content/projects/`.
 
+`content/projects/` is a synced copy: the articles' source of truth lives outside this repo (`ARTICLES_SOURCE_DIR` in `.env.local`). Never edit the copies here.
+
+## Step 0 — Pull the latest articles
+
+Run `scripts/pull-articles.sh`. It copies the source folder into `content/projects/` (deleting files removed at the source). If `ARTICLES_SOURCE_DIR` isn't set it changes nothing, and the sync continues with the files already in `content/projects/`. Step 1's `git status` then shows what actually changed.
+
 ## Step 1 — Determine scope
 
 Run `git status --short content/projects/` to detect uncommitted changes.
