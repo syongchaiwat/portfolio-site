@@ -9,7 +9,8 @@ Built with Next.js App Router + TypeScript + Tailwind CSS v4.
 - **Language**: TypeScript (strict — no `any` types)
 - **Styling**: Tailwind CSS v4 — uses `@import "tailwindcss"` (NOT `@tailwind base/components/utilities`)
 - **Animations**: Framer Motion
-- **Theme**: next-themes (`defaultTheme: dark`, `attribute: class`)
+- **Theme**: dark only, forced through next-themes (`forcedTheme: dark`). No light mode or toggle
+- **Background**: one fixed WebGL canvas (Prism), mounted in `app/layout.tsx`
 - **Icons**: lucide-react (note: `Github` icon is deprecated but still functional)
 - **Utilities**: clsx + tailwind-merge via `cn()` helper
 
@@ -26,13 +27,17 @@ Deployed on **Vercel**. Do not modify `next.config.ts` without considering Verce
 ## Key File Structure
 ```
 app/
-  layout.tsx        # ThemeProvider, fonts (Inter + Space Grotesk)
+  layout.tsx        # ThemeProvider, LiquidBackground, fonts (Inter + Space Grotesk)
   page.tsx          # assembles all sections
-  globals.css       # CSS variables, .glass-card, .mesh-bg, .gradient-text
+  globals.css       # all colors, .glass-card, .liquid-bg, .liquid-scrim, .scroll-fade, .gradient-text
 
 components/
+  background/
+    LiquidBackground.tsx  # React wrapper, scroll-driven scrim and dimming
+    liquid-renderer.ts    # WebGL and shader, no React
+    prism-preset.ts       # Prism shape and speed
   layout/
-    Navbar.tsx      # fixed, blur-on-scroll, mobile drawer, dark/light toggle
+    Navbar.tsx      # fixed, blur-on-scroll, mobile drawer
     Footer.tsx      # social icons + copyright
     ThemeProvider.tsx
   sections/
@@ -49,6 +54,8 @@ lib/
     projects.ts             # Project[] with category, article (optional), outcomes, tags
     skills.ts               # skillGroups[]
     experience.ts           # TimelineEntry[] (type: "work"|"education"|"bootcamp")
+
+design/                     # decisions and archived background options. Never imported by the site
 
 content/
   projects/
@@ -145,11 +152,14 @@ location: City, Country
 - Links: GitHub, LinkedIn, Email, YouTube
 
 ## CSS Conventions
-- CSS variables: `--background`, `--surface`, `--surface-2`, `--foreground`, `--muted`, `--muted-foreground`, `--border-color`, `--accent`, `--accent-light`
-- Dark theme on `:root`, light theme on `.light`
-- Accent colour: `#7c3aed` → `#a855f7` (purple/violet gradient)
+- CSS variables: `--background`, `--surface`, `--surface-2`, `--foreground`, `--muted`, `--muted-foreground`, `--border-color`, `--accent`, `--accent-light`, `--on-accent`, `--focus`, `--scrim`, `--liquid-1` to `--liquid-5`
+- All colors live in `globals.css` on `:root`. Components use `var(--accent)`, never hex values
+- Accent: cyan `--accent`, coral `--accent-light`. Text on an accent fill uses `--on-accent`. Keep coral to small labels and gradient ends
+- Text never sits directly on the canvas: `.liquid-scrim` is fixed to the screen, so sections must not add their own background or scrim (a page-attached layer shows as a line while scrolling)
+- Add `.scroll-fade` to new content blocks. Never put it on an ancestor of a `fixed` element, such as the article modal
+- `tailwind.config.ts` is not loaded by Tailwind v4 here. Add theme values with `@theme` in `globals.css`
 - Google Fonts `@import url(...)` **must come before** `@import "tailwindcss"` in globals.css
-- Utility classes: `.glass-card`, `.gradient-text`, `.mesh-bg`, `.cursor-blink`
+- Utility classes: `.glass-card`, `.gradient-text`, `.cursor-blink`
 
 ## Data Conventions
 - All real social URLs are already set (GitHub, LinkedIn, Email, YouTube) across Navbar, Footer, Hero, Contact

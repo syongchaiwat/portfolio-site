@@ -27,8 +27,8 @@ const config: Config = {
         heading: ["Space Grotesk", "sans-serif"],
       },
       backgroundImage: {
-        "gradient-accent": "linear-gradient(135deg, #7c3aed, #a855f7)",
-        "gradient-accent-horizontal": "linear-gradient(90deg, #7c3aed, #a855f7)",
+        "gradient-accent": "var(--gradient-accent)",
+        "gradient-accent-horizontal": "linear-gradient(90deg, var(--accent), var(--liquid-4), var(--accent-light))",
       },
       borderRadius: {
         card: "0.75rem",

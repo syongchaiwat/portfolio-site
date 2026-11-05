@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -17,12 +16,18 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const [activeHref, setActiveHref] = useState<string | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+      const middle = window.innerHeight / 2;
+      const current = navLinks.find((link) => {
+        const rect = document.querySelector(link.href)?.getBoundingClientRect();
+        return rect && rect.top <= middle && rect.bottom >= middle;
+      });
+      setActiveHref(current?.href ?? null);
+    };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -59,24 +64,19 @@ export default function Navbar() {
               <button
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors duration-200 cursor-pointer"
+                aria-current={activeHref === link.href ? "true" : undefined}
+                className={cn(
+                  "text-sm hover:text-[var(--foreground)] transition-colors duration-200 cursor-pointer",
+                  activeHref === link.href ? "text-[var(--accent)]" : "text-[var(--muted)]"
+                )}
               >
                 {link.label}
               </button>
             ))}
           </nav>
 
-          {/* Theme toggle + mobile hamburger */}
-          <div className="flex items-center gap-3">
-            {mounted && (
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] transition-all duration-200"
-                aria-label="Toggle theme"
-              >
-                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
-            )}
+          {/* Mobile hamburger */}
+          <div className="flex items-center gap-3 md:hidden">
             <button
               className="md:hidden p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] transition-all duration-200"
               onClick={() => setMobileOpen((v) => !v)}

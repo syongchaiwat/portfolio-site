@@ -15,11 +15,18 @@ function getDisplayYear(date: string): string {
   return matches ? matches[matches.length - 1] : "";
 }
 
+function getEntryColor(type: TimelineEntry["type"]): string {
+  if (type === "work") return "var(--accent)";
+  if (type === "bootcamp") return "var(--liquid-4)";
+  return "var(--accent-light)";
+}
+
+function tint(color: string, percent: number): string {
+  return `color-mix(in srgb, ${color} ${percent}%, transparent)`;
+}
+
 function EntryCard({ entry, side }: { entry: TimelineEntry; side: "left" | "right" }) {
-  const iconColor =
-    entry.type === "work" ? "#7c3aed" :
-    entry.type === "bootcamp" ? "#a53dd1" :
-    "#a855f7";
+  const iconColor = getEntryColor(entry.type);
   const alignEnd = side === "left";
 
   return (
@@ -28,7 +35,7 @@ function EntryCard({ entry, side }: { entry: TimelineEntry; side: "left" | "righ
       <div className={`flex items-center gap-2 mb-2 ${alignEnd ? "justify-end" : "justify-start"}`}>
         <span
           className="px-2.5 py-0.5 rounded-full text-xs font-semibold"
-          style={{ color: iconColor, background: `${iconColor}20`, border: `1px solid ${iconColor}40` }}
+          style={{ color: iconColor, background: tint(iconColor, 12), border: `1px solid ${tint(iconColor, 25)}` }}
         >
           {entry.type === "work" ? "Work" : entry.type === "bootcamp" ? "Bootcamp" : "Education"}
         </span>
@@ -67,7 +74,7 @@ function EntryCard({ entry, side }: { entry: TimelineEntry; side: "left" | "righ
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-24 px-4 md:px-8 bg-[var(--surface)]/30">
+    <section id="experience" className="py-24 px-4 md:px-8">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <motion.div
@@ -75,7 +82,7 @@ export default function Experience() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-16"
+          className="scroll-fade text-center mb-16"
         >
           <span className="text-sm font-medium text-[var(--accent-light)] tracking-widest uppercase mb-3 block">
             My Journey
@@ -90,7 +97,7 @@ export default function Experience() {
           {/* Full-height center line */}
           <div
             className="absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 pointer-events-none"
-            style={{ background: "linear-gradient(180deg, #7c3aed, #a855f7)" }}
+            style={{ background: "linear-gradient(180deg, var(--accent), var(--liquid-4), var(--accent-light))" }}
           />
 
           <motion.div
@@ -102,10 +109,7 @@ export default function Experience() {
           >
             {timelineEntries.map((entry, idx) => {
               const isLeft = idx % 2 === 0;
-              const iconColor =
-                entry.type === "work" ? "#7c3aed" :
-                entry.type === "bootcamp" ? "#a53dd1" :
-                "#a855f7";
+              const iconColor = getEntryColor(entry.type);
               const Icon =
                 entry.type === "work" ? Briefcase :
                 entry.type === "bootcamp" ? FlaskConical :
@@ -115,7 +119,7 @@ export default function Experience() {
                 <motion.div
                   key={entry.id}
                   variants={isLeft ? slideInLeft : slideInRight}
-                  className="grid grid-cols-[1fr_5rem_1fr] items-start"
+                  className="scroll-fade grid grid-cols-[1fr_5rem_1fr] items-start"
                 >
                   {/* Left side */}
                   {isLeft ? (
@@ -130,7 +134,7 @@ export default function Experience() {
                   <div className="flex flex-col items-center pt-3 z-10">
                     <span
                       className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap mb-1"
-                      style={{ color: iconColor, background: "var(--background)", border: `1px solid ${iconColor}50` }}
+                      style={{ color: iconColor, background: "var(--background)", border: `1px solid ${tint(iconColor, 30)}` }}
                     >
                       {getDisplayYear(entry.date)}
                     </span>
@@ -169,12 +173,9 @@ export default function Experience() {
               entry.type === "work" ? Briefcase :
               entry.type === "bootcamp" ? FlaskConical :
               GraduationCap;
-            const iconColor =
-              entry.type === "work" ? "#7c3aed" :
-              entry.type === "bootcamp" ? "#a53dd1" :
-              "#a855f7";
+            const iconColor = getEntryColor(entry.type);
             return (
-              <motion.div key={entry.id} variants={fadeUp} className="flex gap-4 items-start">
+              <motion.div key={entry.id} variants={fadeUp} className="scroll-fade flex gap-4 items-start">
                 <div
                   className="shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center bg-[var(--background)] mt-1"
                   style={{ borderColor: iconColor }}

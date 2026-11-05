@@ -1,30 +1,41 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
-/* ─── CSS Custom Properties ─────────────────────────────── */
-:root {
-  /* Dark theme (default) */
-  --background: #0a0a0f;
-  --surface: #111118;
-  --surface-2: #1a1a25;
-  --foreground: #ffffff;
-  --muted: #a1a1aa;
-  --muted-foreground: #52525b;
-  --border-color: rgba(124, 58, 237, 0.2);
-  --accent: #7c3aed;
-  --accent-light: #a855f7;
+@source not "../design";
+
+@theme inline {
+  --font-heading: var(--font-space-grotesk), "Space Grotesk", sans-serif;
 }
 
-.light {
-  --background: #f8f7ff;
-  --surface: #ffffff;
-  --surface-2: #f0eeff;
-  --foreground: #0f0f1a;
-  --muted: #4b4b6a;
-  --muted-foreground: #7b7b9a;
-  --border-color: rgba(124, 58, 237, 0.15);
-  --accent: #7c3aed;
-  --accent-light: #a855f7;
+/* ─── CSS Custom Properties ─────────────────────────────── */
+:root {
+  color-scheme: dark;
+
+  /* Prism. Other options: design/liquid-options/tokens.json */
+  --background: #050d20;
+  --surface: #081428d9;
+  --surface-2: #10243f;
+  --foreground: #f3f9ff;
+  --muted: #c8d7e8;
+  --muted-foreground: #9db0c7;
+  --border-color: #5fdcff4d;
+  --accent: #35d0f5;
+  --accent-light: #ffab7a;
+  --on-accent: #04202c;
+  --focus: #b8f1ff;
+  --scrim: #050d20b8;
+
+  /* Shader colors, darkest to the coral flare */
+  --liquid-1: #0a1c3f;
+  --liquid-2: #2c62c8;
+  --liquid-3: #2fcdf2;
+  --liquid-4: #c0a8ff;
+  --liquid-5: #ff9f6b;
+
+  --accent-soft: color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-ring: color-mix(in srgb, var(--accent) 45%, transparent);
+  --accent-glow: 0 0 20px color-mix(in srgb, var(--accent) 40%, transparent);
+  --gradient-accent: linear-gradient(135deg, var(--accent), var(--liquid-4), var(--accent-light));
 }
 
 /* ─── Base Styles ────────────────────────────────────────── */
@@ -44,9 +55,87 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ─── Liquid Background ──────────────────────────────────── */
+.liquid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(135deg, var(--liquid-1), var(--liquid-2) 60%, var(--liquid-1));
+}
+
+/* Fixed to the screen, so no edge ever scrolls past. The center stays calm,
+   and the vivid edges fill in as --edge-fill goes from 0 to 1 on scroll. */
+.liquid-scrim {
+  --edge-fill: 0;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 78% 82% at 50% 50%,
+    var(--scrim) 52%,
+    color-mix(in srgb, var(--scrim) calc(var(--edge-fill) * 100%), transparent) 100%
+  );
+}
+
+/* Text reaches the screen edges on phones */
+@media (max-width: 640px) {
+  .liquid-scrim {
+    background: var(--scrim);
+  }
+}
+
+/* Darkens gradually further down the page. Opacity is set on scroll. */
+.liquid-dim {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: var(--background);
+}
+
+/* ─── Scroll Fades ───────────────────────────────────────── */
+/* Browsers without scroll timelines keep the one-time Framer Motion fade-in. */
+@keyframes scroll-enter {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes scroll-leave {
+  to {
+    opacity: 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-fade {
+      animation: scroll-enter linear both, scroll-leave linear forwards;
+      animation-timeline: view(), view();
+      animation-range: cover 0px cover 200px, cover calc(100% - 180px) cover calc(100% - 40px);
+    }
+
+    .scroll-fade-out {
+      animation: scroll-leave linear forwards;
+      animation-timeline: view();
+      animation-range: cover calc(100% - 180px) cover calc(100% - 40px);
+    }
+  }
+}
+
 /* ─── Gradient Text ──────────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: var(--gradient-accent);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -54,15 +143,11 @@ body {
 
 /* ─── Glass Card ─────────────────────────────────────────── */
 .glass-card {
-  background: rgba(17, 17, 24, 0.85);
+  background: var(--surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
-}
-
-.light .glass-card {
-  background: rgba(255, 255, 255, 0.9);
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────── */
@@ -79,49 +164,8 @@ body {
 
 /* ─── Selection ──────────────────────────────────────────── */
 ::selection {
-  background: rgba(124, 58, 237, 0.3);
-  color: #ffffff;
-}
-
-/* ─── Animated background mesh ───────────────────────────── */
-.mesh-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.mesh-bg::before,
-.mesh-bg::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.12;
-  animation: float-anim 8s ease-in-out infinite;
-}
-
-.mesh-bg::before {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, #7c3aed, transparent);
-  top: -100px;
-  left: -100px;
-}
-
-.mesh-bg::after {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, #a855f7, transparent);
-  bottom: -100px;
-  right: -100px;
-  animation-delay: -4s;
-}
-
-@keyframes float-anim {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+  background: var(--accent-ring);
+  color: var(--foreground);
 }
 
 @keyframes typing-cursor {

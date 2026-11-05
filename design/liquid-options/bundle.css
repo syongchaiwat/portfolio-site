@@ -1,0 +1,90 @@
+html, body { margin: 0; }
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+[data-theme] { color: var(--foreground); }
+
+/* Stage: the fallback gradient shows if WebGL is missing or a context is lost. */
+.lc-stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(135deg, var(--liquid-1), var(--liquid-2) 45%, var(--liquid-3));
+}
+.lc-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: -2; }
+.lc-scrim-hero {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse 78% 82% at 50% 50%, var(--scrim) 0%, var(--scrim) 52%, transparent 100%);
+}
+.lc-scrim-read { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--scrim); }
+
+/* Hero, sized from the site's real Hero.tsx at its md breakpoint. */
+.lc-hero {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: var(--space-24) var(--space-6); min-height: 440px; box-sizing: border-box;
+}
+.lc-badge {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: 6px var(--space-4); border-radius: var(--radius-pill);
+  border: 1px solid var(--border-color); background: var(--surface);
+  font-size: 14px; color: var(--muted); margin-bottom: var(--space-6);
+}
+.lc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.lc-h1 { font-family: var(--font-heading); font-weight: 700; font-size: clamp(36px, 8vw, 60px); line-height: 1.25; margin: 0 0 var(--space-2); }
+.lc-sub { font-family: var(--font-heading); font-weight: 500; font-size: clamp(24px, 4vw, 30px); line-height: 1.3; color: var(--muted); margin-bottom: var(--space-4); }
+.lc-tag { font-size: 16px; line-height: 1.625; color: var(--muted); max-width: 520px; margin: 0 0 var(--space-6); }
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.lc-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); justify-content: center; }
+.lc-btn {
+  font: 600 14px/20px var(--font-sans); padding: 12px var(--space-8); border-radius: var(--radius-button);
+  border: 1px solid transparent; cursor: pointer; text-decoration: none;
+}
+.lc-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.lc-btn-primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--accent-glow); }
+.lc-btn-ghost { background: var(--surface); color: var(--foreground); border-color: var(--border-color); }
+
+/* Glass card: the site's .glass-card, retuned per option. */
+.glass-card {
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color); border-radius: var(--radius-card);
+  padding: var(--space-6);
+}
+.lc-section { padding: var(--space-8) var(--space-6); }
+.lc-eyebrow { display: block; text-align: center; font-size: 14px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-light); margin-bottom: var(--space-2); }
+.lc-h2 { font-family: var(--font-heading); font-weight: 700; font-size: 36px; line-height: 1.25; text-align: center; margin: 0 0 var(--space-6); }
+.lc-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-5); }
+.lc-h3 { font-family: var(--font-heading); font-weight: 600; font-size: 16px; margin: 0 0 var(--space-4); }
+.lc-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.lc-chip { font-size: 12px; line-height: 16px; padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-color); color: var(--muted); background: var(--surface-2); }
+
+/* Palette strip. */
+.lc-palette { padding: var(--space-5) var(--space-6) var(--space-6); background: var(--background); display: grid; gap: var(--space-4); }
+.lc-pal-title { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: var(--space-2); }
+.lc-pal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: var(--space-2); }
+.lc-pal-chip { height: 40px; border-radius: var(--radius-button); border: 1px solid var(--border-color); }
+.lc-pal-name { font-size: 12px; line-height: 16px; color: var(--foreground); margin-top: 6px; }
+.lc-pal-hex { font-size: 12px; line-height: 16px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Compare grid. */
+.lc-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--background); }
+@media (max-width: 620px) { .lc-compare { grid-template-columns: 1fr; } }
+.lc-mini { display: flex; flex-direction: column; justify-content: flex-end; min-height: 300px; padding: var(--space-5); box-sizing: border-box; color: var(--foreground); }
+.lc-mini-plate { background: var(--surface); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 12px var(--space-4); }
+.lc-mini-name { font-family: var(--font-heading); font-weight: 700; font-size: 24px; line-height: 1.2; }
+.lc-mini-line { font-size: 14px; line-height: 20px; color: var(--muted); }
+
+/* Motion controls. */
+.lc-controls { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; padding: 12px var(--space-6); background: var(--background); color: var(--muted); font-size: 14px; }
+.lc-seg { font: 500 14px/20px var(--font-sans); padding: 6px 12px; border-radius: var(--radius-button); background: var(--surface-2); color: var(--foreground); border: 1px solid var(--border-color); cursor: pointer; }
+.lc-seg[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.lc-seg:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }

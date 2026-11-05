@@ -52,36 +52,14 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden"
     >
-      {/* Animated background mesh */}
-      <div className="mesh-bg" />
 
-      {/* Floating orbs */}
-      <div
-        className="absolute w-64 h-64 rounded-full opacity-5 blur-3xl pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, #7c3aed, transparent)",
-          top: "20%",
-          right: "10%",
-          animation: "float-anim 10s ease-in-out infinite",
-        }}
-      />
-      <div
-        className="absolute w-48 h-48 rounded-full opacity-5 blur-3xl pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, #a855f7, transparent)",
-          bottom: "20%",
-          left: "10%",
-          animation: "float-anim 12s ease-in-out infinite reverse",
-        }}
-      />
-
-      <div className="relative z-10 max-w-4xl mx-auto">
+      <div className="scroll-fade-out relative z-10 max-w-4xl mx-auto">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--border-color)] bg-[var(--surface)]/50 text-sm text-[var(--muted)] mb-8"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--border-color)] bg-[var(--surface)] text-sm text-[var(--muted)] mb-8"
         >
           <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
           Open to opportunities
@@ -133,10 +111,10 @@ export default function Hero() {
             onClick={() => {
               document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="px-8 py-3 rounded-lg font-semibold text-white text-sm transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+            className="px-8 py-3 rounded-lg font-semibold text-[var(--on-accent)] text-sm transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
             style={{
-              background: "linear-gradient(135deg, #7c3aed, #a855f7)",
-              boxShadow: "0 0 20px rgba(124, 58, 237, 0.4)",
+              background: "var(--accent)",
+              boxShadow: "var(--accent-glow)",
             }}
           >
             View My Work
@@ -144,7 +122,7 @@ export default function Hero() {
           <a
             href="/resume.pdf"
             download
-            className="px-8 py-3 rounded-lg font-semibold text-sm border border-[var(--border-color)] text-[var(--foreground)] hover:border-[var(--accent)] hover:text-[var(--accent-light)] transition-all duration-200 flex items-center gap-2"
+            className="px-8 py-3 rounded-lg font-semibold text-sm border border-[var(--border-color)] bg-[var(--surface)] text-[var(--foreground)] hover:border-[var(--accent)] hover:text-[var(--accent-light)] transition-all duration-200 flex items-center gap-2"
           >
             <Download size={16} />
             Download Resume
@@ -165,7 +143,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={label}
-              className="p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]/50 text-[var(--muted)] hover:text-[var(--accent-light)] hover:border-[var(--accent)] transition-all duration-200 hover:scale-110"
+              className="p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--accent-light)] hover:border-[var(--accent)] transition-all duration-200 hover:scale-110"
             >
               <Icon size={20} />
             </a>
@@ -178,7 +156,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[var(--muted-foreground)]"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[var(--muted)]"
       >
         <span className="text-xs tracking-widest uppercase">Scroll</span>
         <ChevronDown size={16} className="animate-bounce" />

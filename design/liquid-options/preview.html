@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Liquid options</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="bundle.css">
+<script src="bundle.js"></script>
+</head>
+<body>
+<div class="lc-compare">
+  <div class="lc-stage lc-mini" data-theme="molten"><div class="lc-mini-plate"><div class="lc-mini-name">Molten</div><div class="lc-mini-line">Deep violet chrome</div></div></div>
+  <div class="lc-stage lc-mini" data-theme="silk"><div class="lc-mini-plate"><div class="lc-mini-name">Silk</div><div class="lc-mini-line">Wide blue to pink satin</div></div></div>
+  <div class="lc-stage lc-mini" data-theme="opaline"><div class="lc-mini-plate"><div class="lc-mini-name">Opaline</div><div class="lc-mini-line">Pastel soap-film droplets</div></div></div>
+  <div class="lc-stage lc-mini" data-theme="prism"><div class="lc-mini-plate"><div class="lc-mini-name">Prism</div><div class="lc-mini-line">Glassy cyan, coral flare</div></div></div>
+</div>
+<script>
+  document.querySelectorAll('.lc-mini').forEach(function (el) { LiquidChrome.mount(el, { quality: .5 }); });
+</script>
+</body>
+</html>

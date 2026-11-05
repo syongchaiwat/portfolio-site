@@ -1,0 +1,94 @@
+/* Generated from tokens.json */
+:root, [data-theme="molten"] {
+  --background: #0a0614;
+  --surface: #120a26d9;
+  --surface-2: #1e1240;
+  --foreground: #ffffff;
+  --muted: #d3cbe8;
+  --muted-foreground: #a79cc6;
+  --border-color: #a855f766;
+  --accent: #a855f7;
+  --accent-light: #d8b4fe;
+  --on-accent: #12051f;
+  --focus: #e9d5ff;
+  --scrim: #0a0614a8;
+  --liquid-1: #0c0420;
+  --liquid-2: #25107a;
+  --liquid-3: #7426e0;
+  --liquid-4: #c65bf0;
+  --liquid-5: #f6dcff;
+  --accent-glow: 0 0 20px #a855f766;
+}
+[data-theme="silk"] {
+  --background: #060f2e;
+  --surface: #0a1638d9;
+  --surface-2: #13235a;
+  --foreground: #f6f8ff;
+  --muted: #ccd6f4;
+  --muted-foreground: #a5b3de;
+  --border-color: #7db4ff59;
+  --accent: #6ea8ff;
+  --accent-light: #f0a6e6;
+  --on-accent: #06112e;
+  --focus: #ffd9f6;
+  --scrim: #060f2eb0;
+  --liquid-1: #0a1a5e;
+  --liquid-2: #1f4fd8;
+  --liquid-3: #5b8df5;
+  --liquid-4: #d88ae6;
+  --liquid-5: #f7eaff;
+  --accent-glow: 0 0 20px #6ea8ff66;
+}
+[data-theme="opaline"] {
+  --background: #eef0ff;
+  --surface: #ffffffd9;
+  --surface-2: #f1ecff;
+  --foreground: #17103a;
+  --muted: #3f3668;
+  --muted-foreground: #544b7e;
+  --border-color: #6d28d959;
+  --accent: #6d28d9;
+  --accent-light: #a21caf;
+  --on-accent: #ffffff;
+  --focus: #4c1d95;
+  --scrim: #f5f3ffb8;
+  --liquid-1: #7f90f2;
+  --liquid-2: #c6aaf4;
+  --liquid-3: #a6eee6;
+  --liquid-4: #b61fd6;
+  --liquid-5: #fff6ff;
+  --accent-glow: 0 4px 16px #6d28d94d;
+}
+[data-theme="prism"] {
+  --background: #050d20;
+  --surface: #081428d9;
+  --surface-2: #10243f;
+  --foreground: #f3f9ff;
+  --muted: #c8d7e8;
+  --muted-foreground: #9db0c7;
+  --border-color: #5fdcff4d;
+  --accent: #35d0f5;
+  --accent-light: #ffab7a;
+  --on-accent: #04202c;
+  --focus: #b8f1ff;
+  --scrim: #050d20b8;
+  --liquid-1: #0a1c3f;
+  --liquid-2: #2c62c8;
+  --liquid-3: #2fcdf2;
+  --liquid-4: #c0a8ff;
+  --liquid-5: #ff9f6b;
+  --accent-glow: 0 0 20px #35d0f566;
+}
+:root {
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-24: 96px;
+  --radius-button: 8px;
+  --radius-card: 12px;
+  --radius-pill: 9999px;
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-heading: "Space Grotesk", sans-serif;
+}

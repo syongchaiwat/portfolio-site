@@ -21,7 +21,7 @@ export default function Contact() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-12"
+          className="scroll-fade text-center mb-12"
         >
           <span className="text-sm font-medium text-[var(--accent-light)] tracking-widest uppercase mb-3 block">
             Get In Touch
@@ -51,11 +51,11 @@ export default function Contact() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 p-4 glass-card hover:border-[var(--accent)] transition-all duration-200 group"
+              className="scroll-fade flex items-center gap-4 p-4 glass-card hover:border-[var(--accent)] transition-all duration-200 group"
             >
               <div
                 className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-200"
-                style={{ background: "rgba(124, 58, 237, 0.15)" }}
+                style={{ background: "var(--accent-soft)" }}
               >
                 <Icon size={18} className="text-[var(--accent-light)]" />
               </div>

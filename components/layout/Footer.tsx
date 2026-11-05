@@ -9,7 +9,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[var(--border-color)] py-8 px-4">
+    <footer className="relative bg-[var(--background)] border-t border-[var(--border-color)] py-8 px-4">
       <div className="max-w-6xl mx-auto flex flex-col items-center gap-4">
         <div className="flex items-center gap-4">
           {socials.map(({ icon: Icon, href, label }) => (

@@ -47,8 +47,8 @@ function ArticleModal({ project, onClose }: { project: Project; onClose: () => v
         <div className="mb-6">
           <h4 className="text-sm font-semibold text-[var(--foreground)] mb-2 flex items-center gap-2">
             <span
-              className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold text-white shrink-0"
-              style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}
+              className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold text-[var(--on-accent)] shrink-0"
+              style={{ background: "var(--accent)" }}
             >
               1
             </span>
@@ -68,8 +68,8 @@ function ArticleModal({ project, onClose }: { project: Project; onClose: () => v
         <div className="mb-6">
           <h4 className="text-sm font-semibold text-[var(--foreground)] mb-2 flex items-center gap-2">
             <span
-              className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold text-white shrink-0"
-              style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}
+              className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold text-[var(--on-accent)] shrink-0"
+              style={{ background: "var(--accent)" }}
             >
               2
             </span>
@@ -92,8 +92,8 @@ function ArticleModal({ project, onClose }: { project: Project; onClose: () => v
         <div>
           <h4 className="text-sm font-semibold text-[var(--foreground)] mb-3 flex items-center gap-2">
             <span
-              className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold text-white shrink-0"
-              style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}
+              className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold text-[var(--on-accent)] shrink-0"
+              style={{ background: "var(--accent)" }}
             >
               3
             </span>
@@ -157,7 +157,7 @@ export default function Projects() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-10"
+          className="scroll-fade text-center mb-10"
         >
           <span className="text-sm font-medium text-[var(--accent-light)] tracking-widest uppercase mb-3 block">
             My Work
@@ -176,7 +176,7 @@ export default function Projects() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="flex justify-center gap-2 flex-wrap mb-10"
+          className="scroll-fade flex justify-center gap-2 flex-wrap mb-10"
         >
           {PROJECT_CATEGORIES.map((cat) => {
             const isActive = cat === activeCategory;
@@ -188,9 +188,9 @@ export default function Projects() {
                 style={
                   isActive
                     ? {
-                        background: "linear-gradient(135deg, #7c3aed, #a855f7)",
-                        color: "#fff",
-                        boxShadow: "0 0 0 2px rgba(124,58,237,0.4)",
+                        background: "var(--accent)",
+                        color: "var(--on-accent)",
+                        boxShadow: "0 0 0 2px var(--accent-ring)",
                       }
                     : {
                         background: "var(--surface)",
@@ -222,13 +222,13 @@ export default function Projects() {
                 <motion.div
                   key={project.id}
                   variants={fadeUp}
-                  className="glass-card overflow-hidden cursor-pointer group"
+                  className="scroll-fade glass-card overflow-hidden cursor-pointer group"
                   whileHover={!isExpanded ? { scale: 1.01, y: -4 } : {}}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   onClick={() => toggle(project.id)}
                   style={{
                     boxShadow: isExpanded
-                      ? "0 0 0 2px rgba(124, 58, 237, 0.5), 0 20px 40px rgba(0,0,0,0.3)"
+                      ? "0 0 0 2px var(--accent-ring), 0 20px 40px rgba(0,0,0,0.3)"
                       : undefined,
                   }}
                 >
@@ -326,8 +326,8 @@ export default function Projects() {
                                 href={project.demoUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-white transition-all duration-200 hover:opacity-90"
-                                style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-[var(--on-accent)] transition-all duration-200 hover:opacity-90"
+                                style={{ background: "var(--accent)" }}
                               >
                                 <ExternalLink size={14} />
                                 Live Demo

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import LiquidBackground from "@/components/background/LiquidBackground";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -45,7 +46,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <LiquidBackground />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
