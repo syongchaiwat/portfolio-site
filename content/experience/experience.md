@@ -7,7 +7,7 @@
 id: masters
 type: education
 date: Sep 2025 – Present
-title: MSc Informatics (Major: Artificial Intelligence, Minor: Banking & Finance)
+title: MSc Informatics (Major: Artificial Intelligence, Minor: Finance)
 organisation: University of Zurich
 location: Zurich, Switzerland
 ---
