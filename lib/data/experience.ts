@@ -20,7 +20,7 @@ export const timelineEntries: TimelineEntry[] = [
     location: "Zurich, Switzerland",
     bullets: [
       "Coursework spans Advanced Topics in AI, Quantitative Finance, Vision Algorithms for Mobile Robotics, Empirical Methods, and the intersection of AI with healthcare and finance.",
-      "Master's Project: Disentangling Human Behavior Using DisLRUs — evaluating the algorithm between BPTT and RTRL (Neuroeconomics Lab).",
+      "Master's Project (Neuroeconomics Lab): Disentangling Decision-Making with disLRUs. Modelled behavioural sequences from three decision-making algorithms (Sticky, Win-Stay-Lose-Shift, Q-learning) with disentangled Linear Recurrent Units (the lab's unpublished disLRU architecture) in JAX/Flax. Showed interpretable, algorithm-specific latent structure, and detected switches between algorithms with a multiple-stack model whose stacks specialize to distinct algorithms without supervision.",
     ],
   },
   {
