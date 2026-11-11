@@ -11,37 +11,51 @@ export interface ProficiencySkill {
 
 export const skillGroups: SkillGroup[] = [
   {
-    category: "Core Data Science",
-    icon: "🧪",
-    skills: ["Python", "NumPy", "Pandas", "Matplotlib", "Seaborn", "Tableau", "Plotly"],
+    category: "Programming Languages",
+    icon: "💻",
+    skills: ["Python", "SQL", "Scala", "Java", "TypeScript"],
   },
   {
-    category: "Machine Learning",
+    category: "Data Engineering & Visualization",
+    icon: "📊",
+    skills: ["pandas", "NumPy", "Spark", "Hadoop", "Tableau", "Dashboarding"],
+  },
+  {
+    category: "Machine Learning & AI",
     icon: "🤖",
-    skills: [
-      "scikit-learn",
-      "LightGBM",
-      "Feature Engineering",
-      "SHAP",
-      "Model Evaluation",
-      "PyTorch",
-      "TensorFlow",
-    ],
+    skills: ["scikit-learn", "LightGBM", "CatBoost", "TensorFlow", "JAX", "PyTorch", "SHAP"],
   },
   {
-    category: "LLMs & GenAI",
+    category: "LLM & NLP",
     icon: "✨",
     skills: [
+      "LangGraph",
+      "LLM API",
+      "Ollama",
       "RAG",
-      "Prompt Engineering",
+      "LLM Agent Harnesses",
+      "Pydantic",
       "FAISS",
-      "Claude Code"
+      "Knowledge Graphs",
+      "Prompt Engineering",
     ],
   },
   {
-    category: "Big Data",
-    icon: "📊",
-    skills: ["Apache Spark", "Hadoop", "PySpark", "SQL", "BigQuery"],
+    category: "Statistics & Experimentation",
+    icon: "🧪",
+    skills: ["A/B Testing", "Experiment Design", "Hypothesis Testing", "Simulation"],
+  },
+  {
+    category: "MLOps & Engineering",
+    icon: "⚙️",
+    skills: [
+      "MLflow",
+      "Kubeflow Pipelines",
+      "CI/CD",
+      "Automated Testing",
+      "Model Monitoring & Alerting",
+      "Google Cloud Platform",
+    ],
   },
 ];
 
